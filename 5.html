@@ -1,0 +1,424 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Detflix - Free Movies & Web Series</title>
+    <style>
+        :root {
+            --bg-color: #0b0b0b;
+            --card-bg: #141414;
+            --border-color: #222;
+            --accent-blue: #0b63ff;
+            --text-main: #ffffff;
+            --text-muted: #999;
+            --glow-color: rgba(11, 99, 255, 0.2);
+        }
+
+        body {
+            background: linear-gradient(135deg, var(--bg-color), #111827, #071d36, var(--bg-color));
+            background-size: 300% 300%;
+            color: var(--text-main);
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+            animation: pageColorFlow 14s ease infinite;
+            overflow-x: hidden;
+            transition: background 0.8s ease, color 0.8s ease;
+        }
+
+        body::before {
+            content: '';
+            position: fixed;
+            inset: 0;
+            pointer-events: none;
+            background-image: radial-gradient(circle at 20% 20%, var(--glow-color) 0 1px, transparent 2px), radial-gradient(circle at 80% 70%, var(--glow-color) 0 1px, transparent 2px);
+            background-size: 90px 90px, 130px 130px;
+            animation: particleDrift 18s linear infinite;
+            opacity: 0.7;
+        }
+
+        @keyframes pageColorFlow {
+            0%, 100% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+        }
+
+        @keyframes particleDrift {
+            from { transform: translate3d(0, 0, 0); }
+            to { transform: translate3d(-45px, 45px, 0); }
+        }
+
+        .container {
+            width: 100%;
+            max-width: 480px;
+            padding: 20px;
+            box-sizing: border-box;
+            text-align: center;
+            position: relative;
+            z-index: 1;
+        }
+
+        .color-toggle {
+            position: fixed;
+            top: 18px;
+            right: 18px;
+            z-index: 5;
+            width: 44px;
+            height: 44px;
+            border: 1px solid rgba(255,255,255,0.2);
+            border-radius: 50%;
+            background: rgba(20,20,20,0.85);
+            color: var(--text-main);
+            font-size: 21px;
+            cursor: pointer;
+            box-shadow: 0 8px 24px rgba(0,0,0,0.3);
+            transition: transform 0.25s ease, background 0.4s ease, border-color 0.4s ease;
+        }
+
+        .color-toggle:hover,
+        .color-toggle:focus-visible {
+            transform: rotate(20deg) scale(1.1);
+            outline: none;
+        }
+
+        body.warm-mode {
+            --bg-color: #170d0d;
+            --card-bg: #241515;
+            --border-color: #4a2424;
+            --accent-blue: #ff6b35;
+            --text-muted: #c5a4a0;
+            --glow-color: rgba(255, 107, 53, 0.22);
+            background-image: linear-gradient(135deg, #170d0d, #321617, #24110b, #170d0d);
+        }
+
+        /* Header Counter */
+        .counter-section {
+            margin: 30px 0 15px 0;
+            animation: riseIn 0.8s ease both;
+        }
+
+        .counter-number {
+            font-size: 36px;
+            font-weight: 800;
+            color: var(--accent-blue);
+            margin-bottom: 5px;
+        }
+
+        .counter-text {
+            font-size: 13px;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .subtitle {
+            font-size: 14px;
+            color: var(--text-muted);
+            margin-bottom: 25px;
+        }
+
+        /* Share Buttons Grid */
+        .share-grid {
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+            margin-bottom: 15px;
+        }
+
+        .share-btn {
+            flex: 1;
+            padding: 10px;
+            border-radius: 8px;
+            border: none;
+            color: white;
+            font-weight: 600;
+            font-size: 13px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 5px;
+            text-decoration: none;
+        }
+
+        .whatsapp { background-color: #25d366; }
+        .telegram { background-color: #0088cc; }
+        .facebook { background-color: #3b5998; }
+
+        .copy-btn {
+            width: 100%;
+            padding: 12px;
+            background-color: var(--card-bg);
+            border: 1px solid var(--border-color);
+            color: white;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            margin-bottom: 40px;
+        }
+
+        /* Section Headings */
+        .section-title {
+            font-size: 22px;
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+
+        .section-desc {
+            font-size: 13px;
+            color: var(--text-muted);
+            margin-bottom: 20px;
+        }
+
+        .red-line {
+            width: 40px;
+            height: 3px;
+            background-color: var(--accent-blue);
+            margin: 0 auto 25px auto;
+            border-radius: 2px;
+        }
+
+        /* Category Cards */
+        .category-card {
+            background-color: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 20px;
+            text-align: left;
+            margin-bottom: 15px;
+            transition: border-color 0.25s ease, transform 0.25s ease, box-shadow 0.25s ease;
+            animation: riseIn 0.7s ease both;
+        }
+
+        .category-card:hover {
+            border-color: #444;
+            transform: translateY(-7px) scale(1.015);
+            box-shadow: 0 14px 28px rgba(0,0,0,0.24), 0 0 22px var(--glow-color);
+        }
+
+        .category-card:nth-of-type(1) { animation-delay: 0.08s; }
+        .category-card:nth-of-type(2) { animation-delay: 0.16s; }
+        .category-card:nth-of-type(3) { animation-delay: 0.24s; }
+        .category-card:nth-of-type(4) { animation-delay: 0.32s; }
+        .category-card:nth-of-type(5) { animation-delay: 0.40s; }
+        .category-card:nth-of-type(6) { animation-delay: 0.48s; }
+
+        @keyframes riseIn {
+            from { opacity: 0; transform: translateY(24px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .card-icon {
+            font-size: 20px;
+            color: var(--accent-blue);
+            margin-bottom: 10px;
+        }
+
+        .card-title {
+            font-size: 16px;
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+
+        .card-desc {
+            font-size: 13px;
+            color: var(--text-muted);
+        }
+
+        /* OTT Platforms Badges */
+        .ott-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            justify-content: center;
+            margin: 20px 0;
+        }
+
+        .ott-badge {
+            background-color: var(--card-bg);
+            border: 1px solid var(--border-color);
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-size: 13px;
+            color: #ccc;
+        }
+
+        /* CTA Button */
+        @keyframes btnFloat {
+            0% { transform: translateY(0); box-shadow: 0 6px 18px rgba(11,99,255,0.12); }
+            50% { transform: translateY(-6px); box-shadow: 0 14px 30px rgba(11,99,255,0.18); }
+            100% { transform: translateY(0); box-shadow: 0 6px 18px rgba(11,99,255,0.12); }
+        }
+
+        .cta-button {
+            display: inline-block;
+            background-color: var(--accent-blue);
+            color: white;
+            padding: 14px 28px;
+            border-radius: 30px;
+            font-weight: bold;
+            text-decoration: none;
+            font-size: 16px;
+            margin: 18px 0;
+            box-shadow: 0 6px 18px rgba(11,99,255,0.12);
+            animation: btnFloat 2.8s ease-in-out infinite;
+        }
+
+        .share-btn { transition: transform .18s ease, box-shadow .18s ease; }
+        .share-btn:hover { transform: translateY(-6px); box-shadow: 0 10px 26px rgba(0,0,0,0.35); }
+
+        footer {
+            font-size: 12px;
+            color: #666;
+            padding: 20px 0;
+            border-top: 1px solid var(--border-color);
+            width: 100%;
+            text-align: center;
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            *, *::before, *::after {
+                animation-duration: 0.01ms !important;
+                animation-iteration-count: 1 !important;
+                scroll-behavior: auto !important;
+                transition-duration: 0.01ms !important;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <button class="color-toggle" id="colorToggle" type="button" aria-label="Change page colors" title="Change page colors">🌈</button>
+
+    <div class="container">
+        <!-- Share Header -->
+        <div class="counter-section">
+            <div class="counter-number">200</div>
+            <div class="counter-text">Views</div>
+        </div>
+        <p class="subtitle">Help others find the best free movie site — share with friends!</p>
+
+         <a href="#" class="cta-button" id="openNowBtn">▶ Open Now</a>
+
+        <!-- Browse Categories -->
+        <div style="margin-top: 50px;">
+            <div class="section-title">Browse by Category</div>
+            <div class="section-desc">Find exactly what you want to watch</div>
+            <div class="red-line"></div>
+
+            <div class="category-card">
+                <div class="card-icon">❤️</div>
+                <div class="card-title">Bollywood Movies</div>
+                <div class="card-desc">Latest Hindi movies — action, drama, comedy & more.</div>
+            </div>
+
+            <div class="category-card">
+                <div class="card-icon">📺</div>
+                <div class="card-title">Hollywood Movies</div>
+                <div class="card-desc">Blockbusters in Hindi Dubbed & English dual audio.</div>
+            </div>
+
+            <div class="category-card">
+                <div class="card-icon">📁</div>
+                <div class="card-title">South Indian</div>
+                <div class="card-desc">Tamil, Telugu, Malayalam — all dubbed in Hindi.</div>
+            </div>
+
+            <div class="category-card">
+                <div class="card-icon">💻</div>
+                <div class="card-title">Web Series</div>
+                <div class="card-desc">Netflix, Amazon, Hotstar originals and more.</div>
+            </div>
+
+            <div class="category-card">
+                <div class="card-icon">⭐</div>
+                <div class="card-title">Anime</div>
+                <div class="card-desc">Naruto, Dragon Ball, One Piece, Demon Slayer & more.</div>
+            </div>
+
+            <div class="category-card">
+                <div class="card-icon">🎎</div>
+                <div class="card-title"> Drama</div>
+                <div class="card-desc">dramas: Romance, Thriller, Historical — latest episodes.</div>
+            </div>
+        </div>
+
+        <!-- OTT Platforms -->
+        <div style="margin-top: 50px;">
+            <div class="section-title">Available Everywhere</div>
+            <div class="section-desc">OTT PLATFORMS</div>
+            <div class="red-line"></div>
+
+            <div class="ott-container">
+                <div class="ott-badge">Netflix</div>
+                <div class="ott-badge">Amazon Prime</div>
+                <div class="ott-badge">Disney+ Hotstar</div>
+                <div class="ott-badge">Sony LIV</div>
+                <div class="ott-badge">Zee5</div>
+                <div class="ott-badge">JioCinema</div>
+                <div class="ott-badge">Apple TV+</div>
+                <div class="ott-badge">Crunchyroll</div>
+            </div>
+        </div>
+
+        <!-- Top Actions: Open Now + Telegram Join -->
+        <div style="margin-top:20px; display:flex; gap:10px; justify-content:center; align-items:center; flex-wrap:wrap;">
+            <a href="https://t.me/DETFLIX_H" class="share-btn telegram" style="padding:12px 16px; border-radius:20px; text-decoration:none; display:inline-flex; align-items:center; justify-content:center;">Join All (Telegram)</a>
+        </div>
+
+        <!-- Call to Action -->
+        <div style="margin-top: 40px;">
+            <div class="section-title">Ready to Watch?</div>
+            <p class="subtitle">Join millions of movie lovers on Detflix</p>
+            <a href="#" class="cta-button">▶ Go to Detflix ➔</a>
+        </div>
+    </div>
+
+    <script>
+        (function(){
+            // animate views counter to 200
+            var target = 200;
+            var el = document.querySelector('.counter-number');
+            if(el){
+                var cur = 0;
+                var step = Math.max(1, Math.floor(target/40));
+                var t = setInterval(function(){
+                    cur += step;
+                    if(cur >= target){ cur = target; clearInterval(t); }
+                    el.textContent = cur.toLocaleString();
+                }, 30);
+            }
+
+            var openBtn = document.getElementById('openNowBtn');
+            if(openBtn){
+                openBtn.addEventListener('click', function(e){
+                    e.preventDefault();
+                    // open the local channel page
+                    window.location.href = 'https://ais-pre-2r2mywoi2qt7bazt3wujkq-827501653101.asia-east1.run.app';
+                });
+            }
+
+            var colorToggle = document.getElementById('colorToggle');
+            if(colorToggle){
+                colorToggle.addEventListener('click', function(){
+                    document.body.classList.toggle('warm-mode');
+                    var warmMode = document.body.classList.contains('warm-mode');
+                    colorToggle.textContent = warmMode ? '🌅' : '🌈';
+                    colorToggle.setAttribute('aria-label', warmMode ? 'Use cool page colors' : 'Use warm page colors');
+                    colorToggle.setAttribute('title', warmMode ? 'Use cool page colors' : 'Use warm page colors');
+                });
+            }
+        })();
+    </script>
+
+    <footer>
+        © 2026 Detflix · Disclaimer · Privacy<br>
+        This site does not host any files. All content is sourced from third-party sources.
+    </footer>
+
+</body>
+</html>
