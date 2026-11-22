@@ -4,8 +4,37 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="theme-color" content="#080808">
+  <!-- 1. Icon (Favicon) ke liye -->
+  <link rel="icon" href="https://img.icons8.com/?size=100&id=DFR1DqKKfKYb&format=png&color=000000" sizes="48x48" type="image/png">
+
+  <!-- 2. Site Name ke liye (JSON-LD Structured Data) -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "WebSite",
+    "name": "Detflix.mod",
+    "alternateName": ["Short Name"],
+    "url": "https://example.com/"
+  }
+  </script>
     <title>Detflix - Movies & Series</title>
     <style>
+        .custom-search-header {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 8px;
+  font-family: Arial, sans-serif;
+}
+
+.custom-search-header a {
+  margin-left: auto;
+  text-decoration: none;
+  font-weight: 600;
+}
+
+
+
         :root {
             --background: #080808;
             --surface: #121212;
@@ -599,6 +628,11 @@
     </style>
 </head>
 <body>
+
+  <!-- Apni Google Programmable Search Engine ID yahan daalein -->
+  <script async src="https://cse.google.com/cse.js?cx=YOUR_CX_ID"></script>
+  <div class="gcse-search"></div>
+</div>
     <header class="topbar">
         <div class="page-shell topbar-inner">
             <a class="brand" href="1.html" aria-label="Detflix home">
